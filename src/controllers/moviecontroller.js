@@ -11,15 +11,44 @@ const createMovie = async (req, res) => {
   }
 };
 
-// GET all movies
+
+// used to get aggregate review of movies
 const getAllMovies = async (req, res) => {
   try {
-    const movies = await Movie.find();
+    const movies = await Movie.aggregate([
+      {
+        $lookup: {
+          from: "reviews",          //Collection name
+          localField: "_id",        //movies._id
+          foreignField: "movie",    //reviews.movie
+          as: "reviews",
+        },
+      },
+      {
+        $addFields: {
+          averageRating: {
+            $cond: [
+              { $gt: [{ $size: "$reviews" }, 0] },
+              { $avg: "$reviews.rating" },
+              0,
+            ],
+          },
+          totalReviews: { $size: "$reviews" },
+        },
+      },
+      {
+        $project: {
+          reviews: 0,
+        },
+      },
+    ]);
+
     res.status(200).json(movies);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // GET movie by ID
 const getMovieById = async (req, res) => {
