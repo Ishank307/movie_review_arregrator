@@ -5,15 +5,15 @@ const mongoose = require('mongoose')
 const movieSchema = mongoose.Schema({
     title: {
         type: String,
-        Required: true,
+        required: true,
         trim: true
     },
     description:{
-        type:"String",
+        type:String,
         trim:true,
     },
     genre:{
-        type:"String",
+        type:String,
         trim:true
     },
     releaseYear:{

@@ -5,16 +5,14 @@ const {
   addReview,
   getReviewsByMovie,
   deleteReview,
+  updateReview,
 } = require("../controllers/reviewController");
 
 const protect = require("../middlewares/authMiddleware");
 
 router.post("/movies/:movieId/reviews", protect, addReview);
 router.delete("/reviews/:reviewId", protect, deleteReview);
-
-
-// router.post("/movies/:movieId/reviews", addReview);
+router.put("/reviews/:reviewId", protect, updateReview);
 router.get("/movies/:movieId/reviews", getReviewsByMovie);
-// router.delete("/reviews/:reviewId", deleteReview);
 
 module.exports = router;

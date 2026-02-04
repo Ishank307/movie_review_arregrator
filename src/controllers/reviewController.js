@@ -13,7 +13,7 @@ const addReview = async (req, res) => {
 
         const movieExists = await Movie.findById(movieId);
         if (!movieExists) {
-            return res.status(404).json({ messager: "Movie not found" });
+            return res.status(404).json({ message: "Movie not found" });
         }
 
 
@@ -68,8 +68,42 @@ const deleteReview = async (req, res) => {
   }
 };
 
+// UPDATE review
+const updateReview = async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+      return res.status(400).json({ message: "Invalid review ID" });
+    }
+
+    const updates = {};
+    if (req.body.rating !== undefined) updates.rating = req.body.rating;
+    if (req.body.comment !== undefined) updates.comment = req.body.comment;
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "Nothing to update" });
+    }
+
+    const updatedReview = await Review.findByIdAndUpdate(
+      reviewId,
+      updates,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedReview) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    res.status(200).json(updatedReview);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addReview,
   getReviewsByMovie,
   deleteReview,
+  updateReview,
 };
