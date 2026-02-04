@@ -7,8 +7,14 @@ const {
   deleteReview,
 } = require("../controllers/reviewController");
 
-router.post("/movies/:movieId/reviews", addReview);
+const protect = require("../middlewares/authMiddleware");
+
+router.post("/movies/:movieId/reviews", protect, addReview);
+router.delete("/reviews/:reviewId", protect, deleteReview);
+
+
+// router.post("/movies/:movieId/reviews", addReview);
 router.get("/movies/:movieId/reviews", getReviewsByMovie);
-router.delete("/reviews/:reviewId", deleteReview);
+// router.delete("/reviews/:reviewId", deleteReview);
 
 module.exports = router;

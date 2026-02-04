@@ -19,7 +19,7 @@ const addReview = async (req, res) => {
 
         const review = await Review.create({
             movie: movieId,
-            user: req.body.user, 
+            user: req.user.id, 
             rating: req.body.rating,
             comment: req.body.comment,
         });

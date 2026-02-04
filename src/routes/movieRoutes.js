@@ -9,10 +9,16 @@ const {
   deleteMovie,
 } = require("../controllers/moviecontroller");
 
-router.post("/", createMovie);
+const protect = require("../middlewares/authMiddleware");
+
+router.post("/", protect, createMovie);
+router.put("/:id", protect, updateMovie);
+router.delete("/:id", protect, deleteMovie);
+
+// router.post("/", createMovie);
 router.get("/", getAllMovies);
 router.get("/:id", getMovieById);
-router.put("/:id", updateMovie);
-router.delete("/:id", deleteMovie);
+// router.put("/:id", updateMovie);
+// router.delete("/:id", deleteMovie);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const reviewRoutes = require("./routes/reviewRoutes");
 
 
 app.use("/api/movies",movieRoutes);
-app.use("/api",reviewRoutes);
+// app.use("/api",reviewRoutes);
 app.use("/api/auth",authRoutes);
 app.use("/api", reviewRoutes);
 
